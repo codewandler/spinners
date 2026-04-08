@@ -1,0 +1,43 @@
+# https://taskfile.dev
+version: '3'
+
+tasks:
+  default:
+    desc: "List available tasks"
+    cmds:
+      - task --list
+    silent: true
+
+  demo:
+    desc: "Run the interactive spinner showcase in your terminal"
+    cmds:
+      - go run ./cmd/demo
+
+  build:
+    desc: "Build all packages"
+    cmds:
+      - go build ./...
+
+  test:
+    desc: "Run tests"
+    cmds:
+      - go test ./...
+
+  tidy:
+    desc: "Tidy and verify go modules"
+    cmds:
+      - go mod tidy
+      - go mod verify
+
+  gif:
+    desc: "Regenerate demo.gif via VHS (requires Docker)"
+    cmds:
+      - cmd: |
+          echo "→ Building static Linux binary..."
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o spinners-demo ./cmd/demo
+      - cmd: |
+          echo "→ Recording with VHS..."
+          docker run --rm -v $PWD:/vhs ghcr.io/charmbracelet/vhs demo.tape
+      - cmd: |
+          echo "✓ demo.gif written ($(du -sh demo.gif | cut -f1))"
+        silent: true

@@ -1,16 +1,43 @@
-# spinners
+<div align="center">
 
-A collection of **21 width-adaptive animated spinners** for terminal UIs, built as a reusable [Bubble Tea](https://charm.land/bubbletea) component.
+# ✦ spinners
 
-Every spinner renders into exactly `width` terminal columns, so a single spinner instance can be used at any size without reconfiguration.
+**21 width-adaptive animated spinners for terminal UIs**
 
-## Install
+Built as a drop-in [Bubble Tea](https://charm.land/bubbletea) component.
+Every spinner renders into exactly `width` columns — resize at any time, no reconfiguration needed.
+
+[![Go Reference](https://pkg.go.dev/badge/github.com/codewandler/spinners.svg)](https://pkg.go.dev/github.com/codewandler/spinners)
+[![Go Report Card](https://goreportcard.com/badge/github.com/codewandler/spinners)](https://goreportcard.com/report/github.com/codewandler/spinners)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+<br>
+
+![Demo](demo.gif)
+
+</div>
+
+---
+
+## ✨ Features
+
+- **21 built-in spinners** — from Knight Rider to Binary Rain, each with a distinct visual style
+- **Width-adaptive** — pass any column count; the spinner fills it exactly, every frame
+- **Bubble Tea native** — implements the standard `Init / Update / View` pattern as a composable sub-model
+- **Runtime flexibility** — swap spinner, resize, or change background color on the fly
+- **Zero dependencies** beyond Bubble Tea and lipgloss
+
+---
+
+## 📦 Install
 
 ```bash
 go get github.com/codewandler/spinners@latest
 ```
 
-## Quick Start
+---
+
+## 🚀 Quick Start
 
 ```go
 package main
@@ -54,7 +81,11 @@ func main() {
 }
 ```
 
-## Spinner Catalog
+---
+
+## 🎨 Spinner Catalog
+
+All spinners are available via `spinners.All` or by name (e.g. `spinners.KnightRider`).
 
 | # | Name | Description |
 |---|------|-------------|
@@ -80,14 +111,14 @@ func main() {
 | 20 | **Solar Flare** | Roiling red surface with staggered eruptions decaying orange→white |
 | 21 | **Binary Rain** | 0s and 1s at different per-column speeds, brightening as they stream |
 
-Access all spinners via `spinners.All` or use them individually (e.g. `spinners.KnightRider`).
+---
 
-## API
+## 📖 API
 
 ### Types
 
 ```go
-// Spinner defines a named, width-adaptive animation.
+// Spinner is a named, width-adaptive animation.
 type Spinner struct {
     Name   string
     Frames func(tick, width int) string
@@ -102,21 +133,44 @@ type Model struct { ... }
 
 | Function | Description |
 |----------|-------------|
-| `New(s Spinner, width int) Model` | Create a new Model for the given spinner and width |
+| `New(s Spinner, width int) Model` | Create a new Model for the given spinner and column width |
 | `(m *Model) SetWidth(w int)` | Change render width at runtime |
 | `(m Model) Width() int` | Get current render width |
 | `(m *Model) SetSpinner(s Spinner)` | Swap spinner, reset tick to 0 |
 | `(m *Model) SetBackground(color string)` | Set background color (hex, e.g. `"#141414"`) |
-| `(m Model) Tick() tea.Cmd` | Start the animation loop (call from Init) |
+| `(m Model) Tick() tea.Cmd` | Start the animation loop — call from `Init` |
 | `(m Model) Update(msg tea.Msg) (Model, tea.Cmd)` | Handle tick messages |
-| `(m *Model) View() string` | Render current frame |
+| `(m *Model) View() string` | Render current frame into exactly `width` columns |
 
-## Demo
+### Iterating all spinners
+
+```go
+for _, sp := range spinners.All {
+    fmt.Println(sp.Name, sp.Frames(0, 20))
+}
+```
+
+---
+
+## 🖥️ Demo
+
+Run the interactive showcase locally:
 
 ```bash
 go run ./cmd/demo
+# or with Task:
+task demo
 ```
 
-## License
+To regenerate `demo.gif`:
 
-MIT
+```bash
+task gif
+# (requires Docker — see Taskfile.yaml)
+```
+
+---
+
+## 📄 License
+
+[MIT](LICENSE) © codewandler
