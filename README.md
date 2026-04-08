@@ -8,7 +8,7 @@ Built as a drop-in [Bubble Tea](https://charm.land/bubbletea) component.
 Every spinner renders into exactly `width` columns — resize at any time, no reconfiguration needed.
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/codewandler/spinners.svg)](https://pkg.go.dev/github.com/codewandler/spinners)
-[![Go Report Card](https://goreportcard.com/badge/github.com/codewandler/spinners)](https://goreportcard.com/report/github.com/codewandler/spinners)
+[![Go Report Card](https://img.shields.io/badge/go%20report-A-brightgreen?logo=go&logoColor=white)](https://goreportcard.com/report/github.com/codewandler/spinners)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <br>
