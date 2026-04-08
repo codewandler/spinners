@@ -29,6 +29,17 @@ tasks:
       - go mod tidy
       - go mod verify
 
+  lint:
+    desc: "Run golangci-lint"
+    cmds:
+      - golangci-lint run ./...
+
+  fix:
+    desc: "Auto-fix formatting (gofmt -s) and imports, then lint"
+    cmds:
+      - golangci-lint run --fix ./...
+      - task: lint
+
   gif:
     desc: "Regenerate demo.gif via VHS (requires Docker)"
     cmds:

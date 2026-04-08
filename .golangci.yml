@@ -1,0 +1,47 @@
+# https://golangci-lint.run/usage/configuration/
+version: "2"
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/codewandler/spinners
+
+linters:
+  enable:
+    - bodyclose        # HTTP response body closed
+    - copyloopvar      # Loop variable copies (Go 1.22+)
+    - errorlint        # Error wrapping (Go 1.13+)
+    - forcetypeassert  # Unchecked type assertions
+    - gocritic         # Broad set of diagnostics
+    - misspell         # Spelling mistakes in comments/strings
+    - prealloc         # Slice pre-allocation hints
+    - unconvert        # Unnecessary type conversions
+    - unparam          # Unused function parameters
+    - whitespace       # Leading/trailing blank lines
+
+  settings:
+    govet:
+      enable-all: true
+      disable:
+        - fieldalignment  # Too noisy for library code
+
+    gocritic:
+      enabled-tags:
+        - diagnostic
+        - performance
+        - style
+
+    misspell:
+      locale: US
+
+issues:
+  max-same-issues: 0
+  max-issues-per-linter: 0
+
+run:
+  timeout: 5m

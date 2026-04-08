@@ -55,8 +55,8 @@ type Model struct {
 	spinner    Spinner
 	width      int
 	tick       int
-	id         int    // disambiguates ticks when multiple Models run simultaneously
-	bg         string // optional background color (e.g. "#141414"); empty means no background
+	id         int            // disambiguates ticks when multiple Models run simultaneously
+	bg         string         // optional background color (e.g. "#141414"); empty means no background
 	bgStyle    lipgloss.Style // cached whitespace style — rebuilt only when bg changes
 	bgStyleSet bool           // true once bgStyle has been built for the current bg value
 }
@@ -73,10 +73,10 @@ func New(s Spinner, width int) Model {
 func (m *Model) SetWidth(w int) { m.width = w }
 
 // Width returns the current render width.
-func (m Model) Width() int { return m.width }
+func (m *Model) Width() int { return m.width }
 
 // Spinner returns the underlying Spinner definition.
-func (m Model) Spinner() Spinner { return m.spinner }
+func (m *Model) Spinner() Spinner { return m.spinner }
 
 // SetSpinner swaps the active spinner definition and resets the tick counter
 // to zero so the new animation starts from its first frame. The model id is
@@ -89,11 +89,11 @@ func (m *Model) SetSpinner(s Spinner) { m.spinner = s; m.tick = 0 }
 func (m *Model) SetBackground(color string) { m.bg = color }
 
 // Background returns the current background color.
-func (m Model) Background() string { return m.bg }
+func (m *Model) Background() string { return m.bg }
 
 // Tick returns the initial command that starts the animation loop.
 // Call this from your model's Init method (or Batch it in).
-func (m Model) Tick() tea.Cmd {
+func (m *Model) Tick() tea.Cmd {
 	return tea.Tick(m.spinner.fps(), func(_ time.Time) tea.Msg {
 		return TickMsg{id: m.id}
 	})
@@ -101,6 +101,9 @@ func (m Model) Tick() tea.Cmd {
 
 // Update handles TickMsg and advances the animation.
 // Returns the updated Model and the next tick command.
+// Value receiver is intentional: callers do `m.spinner, cmd = m.spinner.Update(msg)`.
+//
+//nolint:gocritic // hugeParam: value semantics are part of the Bubble Tea sub-model contract
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	if t, ok := msg.(TickMsg); ok && t.id == m.id {
 		m.tick++
